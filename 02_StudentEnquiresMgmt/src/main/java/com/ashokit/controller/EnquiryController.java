@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.ashokit.binding.DashboardResponse;
 import com.ashokit.binding.EnquiryForm;
 import com.ashokit.binding.EnquirySearchCriteria;
+import com.ashokit.constants.AppConstants;
 import com.ashokit.entity.StudentEnqEntity;
 import com.ashokit.service.IEnquiryService;
 
@@ -32,7 +33,7 @@ public class EnquiryController {
 	public String dashboardPage(Model model) {
 		//logic to fetch data for dashboard
 		System.out.println("Dashboard method called...");
-		Integer userId=(Integer) session.getAttribute("userId");
+		Integer userId=(Integer) session.getAttribute(AppConstants.STR_USER_ID);
 		System.out.println("UserId:: "+userId);
 		DashboardResponse dashboardData=service.getDasboardData(userId);
 		model.addAttribute("dashboardData", dashboardData);
@@ -62,7 +63,7 @@ public class EnquiryController {
 		System.out.println("EnquiryController.addEnquiryData()"+enqFrm);
 	    System.out.println("EnqFrmId: "+enqFrmId);
 	    //save the data based on userId 
-	  	Integer userId=(Integer) session.getAttribute("userId");
+	  	Integer userId=(Integer) session.getAttribute(AppConstants.STR_USER_ID);
 	  	
 	  	//update records
 		if(enqFrmId!=null) {
@@ -82,7 +83,7 @@ public class EnquiryController {
 	@GetMapping("/view_enquiries")
 	public String viewPage(@ModelAttribute("enquiries")EnquirySearchCriteria enqSearch,Model model) {
 		initForm(model);
-		Integer userId=(Integer)session.getAttribute("userId");
+		Integer userId=(Integer)session.getAttribute(AppConstants.STR_USER_ID);
 		List<StudentEnqEntity> list=null;
 		if(userId!=null) {
 			 list=  service.getAllStudentEnquires(userId);
@@ -114,7 +115,7 @@ public class EnquiryController {
 		search.setEnquiryStatus(status);
 		search.setClassMode(mode);
 		System.out.println("EnquiryController.getFilteredEnqs()"+search);
-		Integer userId=(Integer)session.getAttribute("userId");
+		Integer userId=(Integer)session.getAttribute(AppConstants.STR_USER_ID);
 		System.out.println("userId : "+userId);
         List<StudentEnqEntity> list = service.getFilteredEnqs(search, userId);
         model.addAttribute("list", list);
