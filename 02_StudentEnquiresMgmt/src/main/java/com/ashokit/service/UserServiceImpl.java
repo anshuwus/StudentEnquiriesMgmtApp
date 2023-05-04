@@ -106,8 +106,11 @@ public class UserServiceImpl implements IUserService{
 			body.append("<p>Dear, "+entity.getName()+"</p><p> we've received your request for recovering your password.</p><p> Below is your password.</p>");
 			body.append("<p>Your Password:"+pwd+"</p>");
 			body.append("<a href=\"http://localhost:8081/login\">click here to login your account</a>");
-			emailUtils.sendEmail(email, subject, body);
-			status=AppConstants.STATUS;
+			boolean isSent = emailUtils.sendEmail(email, subject, body);
+			if(isSent)
+			    status=AppConstants.STATUS;
+			else
+				status="Unable to recover your password";
 		}
 		return status;
 	}
